@@ -175,11 +175,11 @@
         <h2 id="前期环境准备"><a href="#前期环境准备" class="headerlink" title="前期环境准备"></a>前期环境准备</h2><p>Pycharm是PythonIDE编辑器，所以这里我们需要在linux安装python。</p>
 <p>操作系统：linux  （其他的操作系统也可以，这里具体说明虚拟机下nbuntu的安装操作)</p>
 <p>1.进入虚拟机中的Ubuntu，打开浏览器。</p>
-<p>2进入<a href="https://www.jetbrains.com/pycharm/download/#section=linux" target="_blank" rel="noopener">pycharm官网</a>下载最新专业版。如图1<br><img src="/2019/09/21/入门篇：抓取的第一个网页/1.png" alt="BP"></p>
+<p>2进入<a href="https://www.jetbrains.com/pycharm/download/#section=linux" target="_blank" rel="noopener">pycharm官网</a>下载最新专业版。如图1<br><img src="https://i.imgur.com/GAFKEAT.png" alt></p>
 <p>3.安装pycharm<br>进入下载的目录并解压文件</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">python@ubuntu：~$ <span class="built_in">cd</span> Downloads/</span><br><span class="line"></span><br><span class="line">python@ubuntu：~$ tar -zxvf pycharm-professional-2019.2.tar.gz</span><br></pre></td></tr></table></figure>
 
-<p><img src="/2019/09/21/入门篇：抓取的第一个网页/2.png" alt="BP"></p>
+<p><img src="https://i.imgur.com/hhT9yhL.png" alt></p>
 <p>4.终端指定到pycharm-professional-2019.2/bin目录下,执行pycharm.sh命令文件，开始安装:</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">python@ubuntu：~$ <span class="built_in">cd</span> pycharm-professional-2019.2/bin/</span><br><span class="line"></span><br><span class="line">python@ubuntu：~$ sh ./pycharm.sh</span><br></pre></td></tr></table></figure>
 
@@ -195,12 +195,12 @@
 
 <p>上面的代码中，我们向新浪新闻的服务器发送了一个get请求，获取新闻首页的新闻。</p>
 <p>3.DOM结构分析</p>
-<p><img src="/2019/09/21/入门篇：抓取的第一个网页/5.png" alt="BP"></p>
+<p><img src="https://i.imgur.com/gUqI7nG.png" alt></p>
 <p>通过分析发现我们需要的内容信息是一个a标签对应的信息，a的上层标签是li，其上一层的标签是class属性值为listBlk的div,listBlk的上一层标签是id属性值为Main的div。</p>
 <p>因此，我们可以从id属性值为Main的div入手，找到这个标签下的每一个li标签，对每一个li标签进行遍历，每一个li标签下有唯一的h4标签</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">ain = soup.find(<span class="string">'div'</span>, &#123;<span class="string">'id'</span>: <span class="string">'Main'</span>&#125;)  <span class="comment"># 找出id属性值为Main的div</span></span><br><span class="line">news_blk = news_Main.find(<span class="string">'div'</span>,&#123;<span class="string">'class'</span>:<span class="string">'listBlk'</span>&#125;)  <span class="comment"># 找出class属性值为listBlk的div</span></span><br><span class="line">news = news_blk.find_all(<span class="string">'li'</span>)  <span class="comment"># 找出listBlk下的所有li标签</span></span><br><span class="line">news_titles = []</span><br><span class="line">news_times = []</span><br><span class="line"><span class="comment"># 遍历news</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> news:</span><br><span class="line">    try:</span><br><span class="line">        <span class="comment"># 提取新闻标题</span></span><br><span class="line">        title = i.find(<span class="string">'a'</span>).get_text().strip()</span><br><span class="line">        news_titles.append(title)</span><br><span class="line">        <span class="comment"># 提出新闻时间</span></span><br><span class="line">        time = i.find(<span class="string">'span'</span>).get_text().strip()</span><br><span class="line">        news_times.append(time)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">'新闻标题：'</span>, title)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">'新闻时间:'</span>,time)</span><br><span class="line">        <span class="built_in">print</span>()</span><br><span class="line"></span><br><span class="line">    except AttributeError as e:</span><br><span class="line">        <span class="built_in">continue</span></span><br></pre></td></tr></table></figure>
 
-<p><img src="/2019/09/21/入门篇：抓取的第一个网页/6.png" alt="BP"></p>
+<p><img src="https://i.imgur.com/ynGyBtN.png" alt></p>
 <h1 id="如有错误，还请指正"><a href="#如有错误，还请指正" class="headerlink" title="如有错误，还请指正"></a>如有错误，还请指正</h1><h1 id="如有雷同，算我抄袭"><a href="#如有雷同，算我抄袭" class="headerlink" title="如有雷同，算我抄袭"></a>如有雷同，算我抄袭</h1>
       
 
